@@ -4,9 +4,12 @@
 
 <h3>Page: @(_currentPage?.Title ?? "Default")</h3>
 
+<MudBreadcrumbs Items="_breadcrumbs" />
+
 @code {
 
     private PageDto? _currentPage;
+    private List<BreadcrumbItem> _breadcrumbs = new();
 
     protected override void OnInitialized()
     {
@@ -23,6 +26,13 @@
     private void HandleOnPageChange(string route)
     {
         _currentPage = _pageService.GetPage(route);
+
+        _breadcrumbs = new();
+        _breadcrumbs.Add(new("Home", ""));
+        var breadcrumbs = route.GetBreadcrumbsFromRoute();
+        foreach (var breadcrumb in breadcrumbs)
+            _breadcrumbs.Add(new(breadcrumb.Title, breadcrumb.Url));
+
         StateHasChanged();
     }
 
