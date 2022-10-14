@@ -1,5 +1,31 @@
 ﻿@page "/"
+@attribute [Title("Index")]
+@inject IPageService _pageService
 
 <PageTitle>Index</PageTitle>
 
-<MudText Typo="Typo.h3" Align="Align.Center" Class="my-4">Hello, world! Working!</MudText>
+<MudAvatar Class="d-block mx-auto my-4" Size="Size.Large" 
+    Image="https://avatars.githubusercontent.com/u/69018178" Alt="GermandF's github avatar" />
+
+<MudText Typo="Typo.h3" Align="Align.Center" Class="my-4">Hello, world!</MudText>
+
+<MudText Typo="Typo.h6" GutterBottom="true">Available pages</MudText>
+<MudList>
+    @foreach (var pageDto in _pages)
+    {
+        <MudListItem>
+            <MudLink Href="@pageDto.Url" Underline="Underline.Always">@pageDto.Title</MudLink>
+        </MudListItem>
+    }
+</MudList>
+
+@code {
+
+    private List<PageDto> _pages = new();
+
+    protected override void OnInitialized()
+    {
+        _pages = _pageService.GetPages();
+    }
+
+}
