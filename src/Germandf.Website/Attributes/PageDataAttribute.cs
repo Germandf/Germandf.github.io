@@ -1,11 +1,11 @@
 ﻿namespace Germandf.Website.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-public class TitleAttribute : Attribute
+public class PageDataAttribute : Attribute
 {
     public string Title { get; } = "";
 
-	public TitleAttribute(string title)
+	public PageDataAttribute(string title)
 	{
 		Title = title;
 	}

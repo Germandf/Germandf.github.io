@@ -23,17 +23,17 @@ public static class AssemblyExtensions
     {
         var attributes = component.GetCustomAttributes(inherit: true);
         var routeAttribute = attributes.OfType<RouteAttribute>().FirstOrDefault();
-        var titleAttribute = attributes.OfType<TitleAttribute>().FirstOrDefault();
+        var pageDataAttribute = attributes.OfType<PageDataAttribute>().FirstOrDefault();
 
         if (routeAttribute is null || string.IsNullOrWhiteSpace(routeAttribute.Template) || routeAttribute.Template.Contains('{'))
             return null;
 
         var pageDto = new PageDto() { Url = routeAttribute.Template };
 
-        if (titleAttribute is null || string.IsNullOrWhiteSpace(titleAttribute.Title))
+        if (pageDataAttribute is null)
             return null;
 
-        pageDto.Title = titleAttribute.Title;
+        pageDto.Title = pageDataAttribute.Title;
 
         return pageDto;
     }

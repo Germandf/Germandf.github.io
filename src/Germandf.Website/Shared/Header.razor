@@ -1,0 +1,32 @@
+﻿@inject IPageService _pageService
+@inject NavigationManager _navigationManager
+@implements IDisposable
+
+<h3>Page: @(_currentPage?.Title ?? "Default")</h3>
+
+@code {
+
+    private PageDto? _currentPage;
+
+    protected override void OnInitialized()
+    {
+        HandleOnPageChange(GetRoute(_navigationManager.Uri));
+        _navigationManager.LocationChanged += HandleLocationChanged;
+    }
+
+    void IDisposable.Dispose() =>
+        _navigationManager.LocationChanged -= HandleLocationChanged;
+
+    private void HandleLocationChanged(object? sender, LocationChangedEventArgs e) => 
+        HandleOnPageChange(GetRoute(e.Location));
+
+    private void HandleOnPageChange(string route)
+    {
+        _currentPage = _pageService.GetPage(route);
+        StateHasChanged();
+    }
+
+    private string GetRoute(string uri) => 
+        uri.Replace(_navigationManager.BaseUri, "").Insert(0, "/");
+
+}
