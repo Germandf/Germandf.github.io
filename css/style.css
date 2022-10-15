@@ -1,1 +1,18 @@
-﻿
+﻿.navmenu-autocomplete {
+    margin: 0;
+    margin-bottom: 15px;
+    max-width: 500px;
+}
+
+    .navmenu-autocomplete input.mud-select-input {
+        border-bottom-color: var(--mud-palette-appbar-text);
+    }
+
+    .navmenu-autocomplete input.mud-select-input::placeholder {
+        color: var(--mud-palette-appbar-text);
+        opacity: 0.80;
+    }
+
+    .navmenu-autocomplete svg {
+        color: var(--mud-palette-appbar-text);
+    }
