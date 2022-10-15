@@ -1,0 +1,112 @@
+﻿@inject IPageService _pageService
+
+<MudAppBar Class="docs-appbar" Elevation="0">
+    <MudHidden Breakpoint="Breakpoint.SmAndUp">
+        <MudIconButton OnClick="ToggleDrawer" Icon="@Icons.Rounded.Notes" Color="Color.Inherit" Edge="Edge.Start" />
+        <MudSpacer/>
+        <NavLink ActiveClass="d-flex" href="/">
+            <MudAvatar Image="https://avatars.githubusercontent.com/u/69018178" Alt="GermandF's github avatar" />
+        </NavLink>
+        <MudSpacer/>
+        <MudIconButton Icon="@Icons.Rounded.Search" Color="Color.Inherit" Edge="Edge.End" OnClick="@(() => OpenSearchDialog())" />
+    </MudHidden>
+    <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+        <NavLink ActiveClass="d-flex me-4" href="/">
+            <MudAvatar Image="https://avatars.githubusercontent.com/u/69018178" Alt="GermandF's github avatar" />
+        </NavLink>
+        <MudButton Href="blog" Color="Color.Inherit" Variant="Variant.Text">Blog</MudButton>
+        <MudButton Href="tools" Color="Color.Inherit" Variant="Variant.Text">Tools</MudButton>
+        <MudButton Href="about" Color="Color.Inherit" Variant="Variant.Text">About</MudButton>
+        <MudSpacer/>
+        <MudAutocomplete T="string" AutoFocus="true" Placeholder="Search" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search">
+            <ItemTemplate Context="result">
+                <MudText>@result</MudText> <MudText Typo="Typo.body2">@result</MudText>
+            </ItemTemplate>
+        </MudAutocomplete>
+    </MudHidden>
+</MudAppBar>
+<MudDrawer Open="@_drawerOpen" OpenChanged="OnDrawerOpenChanged" ClipMode="DrawerClipMode.Docked" Elevation="0" Breakpoint="Breakpoint.Lg">
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+        <MudToolBar Dense="true" DisableGutters="true" Class="docs-gray-bg">
+            <MudIconButton Icon="@Icons.Rounded.Close" Color="Color.Inherit" OnClick="ToggleDrawer" />
+        </MudToolBar>
+        <MudNavMenu Color="Color.Primary" Margin="Margin.Dense" Rounded="true" Class="pa-2">
+            <MudNavLink Href="blog">Blog</MudNavLink>
+            <MudNavLink Href="tools">Tools</MudNavLink>
+            <MudNavLink Href="about">About</MudNavLink>
+        </MudNavMenu>
+    </MudHidden>
+</MudDrawer>
+
+<MudDialog @bind-IsVisible="_searchDialogOpen" Options="_dialogOptions" Class="docs-gray-bg" ClassContent="docs-mobile-dialog-search">
+    <DialogContent>
+        <MudAutocomplete T="string" Placeholder="Search docs" Clearable="true" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search">
+            <ItemTemplate Context="result">
+                <MudText>@result</MudText> <MudText Typo="Typo.body2">@result</MudText>
+            </ItemTemplate>
+        </MudAutocomplete>
+        <div class="d-flex justify-center align-center mud-height-full pb-16">
+            <MudText Typo="Typo.body2" Class="mud-text-secondary">Nothing found, do a search</MudText>
+        </div>
+    </DialogContent>
+</MudDialog>
+@*
+    <MudAutocomplete T="string" Label="Search" @bind-Value="_pageSearch" SearchFunc="@SearchStates"
+                     AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" />
+*@
+@code {
+
+    private bool _searchDialogOpen;
+    private void OpenSearchDialog() => _searchDialogOpen = true;
+    private DialogOptions _dialogOptions = new() { Position = DialogPosition.TopCenter, NoHeader = true };
+    private bool _drawerOpen = true;
+
+    private void ToggleDrawer()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    private void OnDrawerOpenChanged(bool value)
+    {
+        _drawerOpen = value;
+        StateHasChanged();
+    }
+
+    private string _pageSearch = "";
+
+    private string[] states =
+    {
+        "Alabama", "Alaska", "American Samoa", "Arizona",
+        "Arkansas", "California", "Colorado", "Connecticut",
+        "Delaware", "District of Columbia", "Federated States of Micronesia",
+        "Florida", "Georgia", "Guam", "Hawaii", "Idaho",
+        "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky",
+        "Louisiana", "Maine", "Marshall Islands", "Maryland",
+        "Massachusetts", "Michigan", "Minnesota", "Mississippi",
+        "Missouri", "Montana", "Nebraska", "Nevada",
+        "New Hampshire", "New Jersey", "New Mexico", "New York",
+        "North Carolina", "North Dakota", "Northern Mariana Islands", "Ohio",
+        "Oklahoma", "Oregon", "Palau", "Pennsylvania", "Puerto Rico",
+        "Rhode Island", "South Carolina", "South Dakota", "Tennessee",
+        "Texas", "Utah", "Vermont", "Virgin Island", "Virginia",
+        "Washington", "West Virginia", "Wisconsin", "Wyoming",
+    };
+
+    private List<PageDto> _pages = new();
+
+    protected override void OnInitialized()
+    {
+        _pages = _pageService.GetPages();
+    }
+
+    private async Task<IEnumerable<string>> SearchStates(string value)
+    {
+        await Task.Delay(5);
+
+        if (string.IsNullOrEmpty(value))
+            return new string[0];
+
+        return states.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+}

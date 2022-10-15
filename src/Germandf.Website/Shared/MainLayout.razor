@@ -4,7 +4,13 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<MudContainer>
-    <Header />
-    @Body
-</MudContainer>
+<MudLayout>
+    <NavMenu />
+    <MudMainContent Class="pt-16 px-16">
+        <MudContainer Class="mt-6">
+            <Header />
+            @Body
+        </MudContainer>
+    </MudMainContent>
+    <Footer />
+</MudLayout>

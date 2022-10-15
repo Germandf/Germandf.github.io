@@ -2,14 +2,15 @@
 @inject NavigationManager _navigationManager
 @implements IDisposable
 
-<h3>Page: @(_currentPage?.Title ?? "Default")</h3>
+<PageTitle>@(_currentPage?.Title ?? _defaultTitle)</PageTitle>
 
 <MudBreadcrumbs Items="_breadcrumbs" />
 
-@code {
+    @code {
 
     private PageDto? _currentPage;
     private List<BreadcrumbItem> _breadcrumbs = new();
+    private string _defaultTitle = "Germandf";
 
     protected override void OnInitialized()
     {
