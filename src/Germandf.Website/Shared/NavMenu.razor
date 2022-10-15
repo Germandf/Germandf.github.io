@@ -24,7 +24,8 @@
                              SearchFunc="@SearchPages" ValueChanged="OnSearchResult" Dense="true" Class="ma-0"
                             Style="@($"color:{Colors.Grey.Lighten5};")">
                 <ItemTemplate>
-                    <MudText>@context.Url</MudText> <MudText Typo="Typo.body2">@context.Title</MudText>
+                    <MudText>@context.Title</MudText>
+                    <MudText Typo="Typo.body2">@context.Description</MudText>
                 </ItemTemplate>
             </MudAutocomplete>
         </div>
@@ -48,7 +49,8 @@
         <MudAutocomplete T="PageDto" Placeholder="Search" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search"
                          SearchFunc="@SearchPages" ValueChanged="OnSearchResult">
             <ItemTemplate>
-                <MudText>@context.Url</MudText> <MudText Typo="Typo.body2">@context.Title</MudText>
+                <MudText>@context.Title</MudText>
+                <MudText Typo="Typo.body2">@context.Description</MudText>
             </ItemTemplate>
         </MudAutocomplete>
         <div class="d-flex justify-center align-center mud-height-full pb-8">
@@ -79,7 +81,7 @@
         await Task.Delay(5);
 
         if (string.IsNullOrEmpty(value))
-            return new List<PageDto>();
+            return _pages.Where(x => x.IsFeatured);
 
         return _pages.Where(x => x.Title.Contains(value, StringComparison.InvariantCultureIgnoreCase));
     }

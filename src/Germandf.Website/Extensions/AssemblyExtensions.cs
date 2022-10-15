@@ -34,6 +34,8 @@ public static class AssemblyExtensions
             return null;
 
         pageDto.Title = pageDataAttribute.Title;
+        pageDto.Description = pageDataAttribute.Description;
+        pageDto.IsFeatured = pageDataAttribute.IsFeatured;
 
         return pageDto;
     }
