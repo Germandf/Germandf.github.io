@@ -12,4 +12,11 @@
     <PackageReference Include="MudBlazor" Version="6.0.17" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\games\Prototype2\Build\Prototype2.data.unityweb" />
+    <None Include="wwwroot\games\Prototype2\Build\Prototype2.framework.js.unityweb" />
+    <None Include="wwwroot\games\Prototype2\Build\Prototype2.loader.js" />
+    <None Include="wwwroot\games\Prototype2\Build\Prototype2.wasm.unityweb" />
+  </ItemGroup>
+
 </Project>
